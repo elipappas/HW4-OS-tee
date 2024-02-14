@@ -11,9 +11,9 @@ int main(int argc, char **argv)
   // Creating the file pointer which is the file passed into t
   FILE *fp;
 
-  // create the in buffer char array
+  // initialize the in buffer char array
   char inbuf[MSGSIZE];
-  // create the pipe
+  // initialize the pipe
   int p[2];
 
   // initialize the child
@@ -22,8 +22,7 @@ int main(int argc, char **argv)
   int status;
 
   // create the pipe and check to see if created successfully
-  if (pipe(p) < 0)
-    exit(1);
+  if (pipe(p) < 0) exit(1);
 
   // fork to create the child
   child = fork();
@@ -39,10 +38,10 @@ int main(int argc, char **argv)
     // loop while the pipe is still being read
     while ((bytesRead = read(p[0], inbuf, MSGSIZE)) != 0)
     {
-        // prints the inbuf to the terminal
-        printf("%s", inbuf);
-        // puts the inbuf into the text file
-        fwrite(inbuf, sizeof(char), bytesRead, fp);
+      // prints the inbuf to the terminal
+      printf("%.*s", (int)bytesRead, inbuf);
+      // puts the inbuf into the text file
+      fwrite(inbuf, sizeof(char), bytesRead, fp);
     }
 
     // close the file as we are done writing to it
@@ -50,8 +49,7 @@ int main(int argc, char **argv)
     // close the read end of the pipe
     close(p[0]);
     // exit
-    exit(0); 
-    
+    exit(0);    
   }
 
   // parent case
